@@ -1,74 +1,182 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tarea 2</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 0;
-            background-color: #f8f8f8;
-        }
-        .contenedor {
-            border: 2px solid black;
-            padding: 20px;
-            width: 600px;
-            background-color: white;
-        }
-
-        h1 {
-            font-size: 24px;
-        }
-
-        .caja1 {
-            border: 2px solid black;
-            background-color: #add8e6;
-            color: #000080;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-        .caja2 {
-            background-image: url('img/fotomonos.jpg');
-            background-size: cover;
-            background-position: center 30%; /* Ajustado para mostrar los monos */
-            height: 150px; /* Aumentado para mostrar más contenido */
-            display: flex;
-            color: black;
-            margin-bottom: 10px;
-            border: 2px solid black; /* Borde negro sólido de 2px */
-        }
-        .caja3 {
-            border: 2px dashed red;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-        .caja4 {
-            border: 2px solid green;
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-        .caja5 {
-            background-color: #ccc;
-            padding: 20px;
-            margin: 20px;
-            border: 2px solid black;
-        }
-    </style>
+    <title>Viajes y Naturaleza</title>
 </head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Verdana', sans-serif;
+    }
 
+    nav{
+        background-color: #093394;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    .titulo_nav{
+        padding: 15px;
+        padding-left: 30px;
+        font-weight: bold;
+        font-size: 25px;
+    }
+    nav ul{
+        list-style: none;
+        text-align: right;
+        font-size: 16px;
+        margin-top: 18px;  
+        margin-right: 35px;      
+    }
+    nav ul li{
+        display: inline-block;
+        margin-right: 20px;
+    }
+    nav ul li:hover{
+        cursor: pointer;
+        color: #07d8ed;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: stretch;
+        gap: 20px;
+        padding: 50px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        width: 27%;
+        box-shadow: 0px 2px 3px lightsteelblue;
+        border-radius: 20px;
+        transition: all 0.5s ease;
+        overflow: hidden;
+    }
+    .card img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        border-radius: 20px 20px 0 0;
+    }
+    .card-content {
+        padding: 10px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .card-content h1 {
+        text-align: left;
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+    .card-content p {
+        text-align: left;
+        font-size: 14px;
+        flex-grow: 1;
+    }
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    table{
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto 100px;
+        border-collapse: collapse;
+        border-left: 2px solid #c8dddf;
+        border-right: 2px solid  #c8dddf;
+        border-top: 2px solid  #c8dddf;
+    }
+    table tr td{
+        border-bottom: 2px solid  #c8dddf;
+        padding: 20px;
+    }
+    tr:nth-child(1){
+        background-color: #093394;
+        color: white;
+        font-weight: bold;
+    }
+    tr:hover{
+        background-color: #a09ccd;
+    }
+</style>
 <body>
-    <div class="contenedor">
-        <h1>Demostración de Propiedades CSS</h1>
-        <div class="caja1">Colores: Fondo azul claro, texto azul oscuro.</div>
-        <div class="caja2">Fondo con imagen.</div>
-        <div class="caja3">Borde con estilo punteado rojo.</div>
-        <div class="caja4">Borde con esquinas redondeadas verdes.</div>
-        <div class="caja5">Margen de 20px y padding de 20px.</div>
-    </div>
-</body>
+    <nav>
+        <p class="titulo_nav">Viajes y Naturaleza</p>
+        <ul>
+            <li>Inicio</li>
+            <li>Galeria</li>
+            <li>Destinos</li>
+            <li>Contacto</li>
+        </ul>
+    </nav>
 
+    <div class="container">
+        <div class="card">
+            <img src="https://i.pinimg.com/736x/13/e5/2a/13e52a010d6b4ab7db83f417861f372c.jpg" alt="Montaña">
+            <div class="card-content">
+                <h1>Paisajes de montaña</h1>
+                <p>Impresionantes vistas de cordilleras y picos nevados.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS5jnPrzjqZTEkAHv8NO7Dopkh7Uw5s9hEJQ&s" alt="Bosque">
+            <div class="card-content">
+                <h1>Bosques Misteriosos</h1>
+                <p>Explorando la tranquilidad de los bosques antiguos.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="https://images.pexels.com/photos/457882/pexels-photo-457882.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Costas">
+            <div class="card-content">
+                <h1>Costas Paradisiacas</h1>
+                <p>Playas de arena blanca y aguas  cristalina.</p>
+            </div>
+        </div>
+    </div>
+
+    <table>
+        <tr>
+            <td>Destino</td>
+            <td>País</td>
+            <td>Dificultad</td>
+            <td>Temporada Recomendada</td>
+        </tr>
+        <tr>
+            <td>Pico Bonito</td>
+            <td>Honduras</td>
+            <td>Alta</td>
+            <td>Mayo-Septiembre</td>
+        </tr>
+        <tr>
+            <td>Cristo Redentor</td>
+            <td>Brasil</td>
+            <td>Media</td>
+            <td>Julio-agosto</td>
+        </tr>
+        <tr>
+            <td>Islas Maldivas</td>
+            <td>Maldivas</td>
+            <td>Baja</td>
+            <td>Todo el año</td>
+        </tr>
+        <tr>
+            <td>Salty Springs</td>
+            <td>Fortnite</td>
+            <td>Alta</td>
+            <td>Noviembre-Marzo</td>
+        </tr>
+    </table>
+</body>
 </html>
