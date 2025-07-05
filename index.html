@@ -1,450 +1,328 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galaxia Interactiva - Hugo Varela</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            background-color: #000;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            font-family: Arial, sans-serif;
-            color: white;
-            perspective: 1000px;
-        }
-        
-        .container {
-            position: relative;
-            width: 800px;
-            height: 600px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-            overflow: hidden;
-        }
-        
-        .galaxia {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(ellipse at center, #0e0b26 0%, #090618 50%, #000000 100%);
-            transform-style: preserve-3d;
-        }
-        
-        .estrellas {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-        
-        .estrella {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background-color: #fff;
-            border-radius: 50%;
-            animation: parpadeo 3s infinite;
-        }
-        
-        @keyframes parpadeo {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-        
-        .sol {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
-            background: radial-gradient(ellipse at center, #fff8a8 0%, #ffde59 40%, #ff9d00 70%, #ff4800 100%);
-            border-radius: 50%;
-            box-shadow: 0 0 30px #ff9d00;
-            z-index: 10;
-            animation: sol-brillo 5s infinite alternate;
-        }
-        
-        @keyframes sol-brillo {
-            0% { box-shadow: 0 0 20px #ff9d00; }
-            100% { box-shadow: 0 0 40px #ff9d00; }
-        }
-        
-        .orbita {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-        }
-        
-        .orbita1 { width: 140px; height: 140px; }
-        .orbita2 { width: 220px; height: 220px; }
-        .orbita3 { width: 300px; height: 300px; }
-        .orbita4 { width: 380px; height: 380px; }
-        .orbita5 { width: 480px; height: 480px; }
-        .orbita6 { width: 580px; height: 580px; }
-        .orbita7 { width: 680px; height: 680px; }
-        
-        .planeta {
-            position: absolute;
-            border-radius: 50%;
-            box-shadow: inset -10px -10px 20px rgba(0, 0, 0, 0.6);
-            transition: all 0.3s ease-in-out;
-            cursor: pointer;
-        }
-        
-        .mercurio {
-            width: 12px;
-            height: 12px;
-            background: linear-gradient(45deg, #aba8a2, #cdc9c3);
-            animation: orbitar 8s linear infinite;
-            top: 50%;
-            left: calc(50% + 70px);
-            margin: -6px;
-            z-index: 2;
-        }
-        
-        .venus {
-            width: 18px;
-            height: 18px;
-            background: linear-gradient(45deg, #c17f47, #f9b766);
-            top: 50%;
-            left: calc(50% + 110px);
-            margin: -9px;
-            z-index: 2;
-        }
-        
-        .venus:hover {
-            transform: scale(1.5);
-            box-shadow: 0 0 15px #f9b766;
-        }
-        
-        .tierra {
-            width: 20px;
-            height: 20px;
-            background: linear-gradient(45deg, #1a4567, #4198d4);
-            animation: orbitar 20s linear infinite;
-            top: 50%;
-            left: calc(50% + 150px);
-            margin: -10px;
-            z-index: 2;
-        }
-        
-        .tierra::after {
-            content: '';
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: #d1d1d1;
-            border-radius: 50%;
-            top: -3px;
-            left: 5px;
-        }
-        
-        .marte {
-            width: 16px;
-            height: 16px;
-            background: linear-gradient(45deg, #934426, #c45c2c);
-            top: 50%;
-            left: calc(50% + 190px);
-            margin: -8px;
-            z-index: 2;
-        }
-        
-        .marte:hover {
-            transform: scale(1.5) rotate(45deg);
-            box-shadow: 0 0 15px #c45c2c;
-        }
-        
-        .jupiter {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(45deg, #a88b6d, #ddbc8b);
-            animation: orbitar 30s linear infinite;
-            animation-delay: -15s;
-            top: 50%;
-            left: calc(50% + 240px);
-            margin: -20px;
-            z-index: 3;
-        }
-        
-        .jupiter::before {
-            content: '';
-            position: absolute;
-            width: 46px;
-            height: 10px;
-            background: rgba(221, 188, 139, 0.3);
-            border-radius: 50%;
-            top: 15px;
-            left: -3px;
-            transform: rotate(-20deg);
-            z-index: 1;
-        }
-        
-        .saturno {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(45deg, #cba95c, #e8d2a0);
-            top: 50%;
-            left: calc(50% + 290px);
-            margin: -18px;
-            z-index: 3;
-        }
-        
-        .saturno:hover {
-            transform: scale(1.3);
-            box-shadow: 0 0 20px #e8d2a0;
-        }
-        
-        .anillo {
-            position: absolute;
-            width: 80px;
-            height: 16px;
-            background: linear-gradient(to right, rgba(203, 169, 92, 0), rgba(203, 169, 92, 0.8) 20%, rgba(232, 210, 160, 0.8) 80%, rgba(232, 210, 160, 0));
-            border-radius: 50%;
-            top: 10px;
-            left: -22px;
-            transform: rotate(-20deg);
-            z-index: 2;
-        }
-        
-        .urano {
-            width: 24px;
-            height: 24px;
-            background: linear-gradient(45deg, #a0ced8, #cef2f2);
-            animation: orbitar 40s linear infinite;
-            top: 50%;
-            left: calc(50% + 340px);
-            margin: -12px;
-            z-index: 2;
-        }
-        
-        .neptuno {
-            width: 22px;
-            height: 22px;
-            background: linear-gradient(45deg, #3a5cc7, #5b7ce2);
-            top: 50%;
-            left: calc(50% + 390px);
-            margin: -11px;
-            z-index: 2;
-        }
-        
-        .neptuno:hover {
-            transform: scale(1.4) rotate(-30deg);
-            box-shadow: 0 0 18px #5b7ce2;
-        }
-        
-        @keyframes orbitar {
-            0% {
-                transform: rotate(0deg) translateX(var(--radio-orbita)) rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg) translateX(var(--radio-orbita)) rotate(-360deg);
-            }
-        }
-        
-        .cometa {
-            position: absolute;
-            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 100%);
-            height: 2px;
-            width: 60px;
-            opacity: 0;
-            pointer-events: none;
-        }
-        
-        .cometa1 {
-            top: 20%;
-            left: 10%;
-            animation: cometa-movimiento 8s linear infinite;
-            animation-delay: 2s;
-        }
-        
-        .cometa2 {
-            top: 70%;
-            left: 80%;
-            width: 80px;
-            animation: cometa-movimiento 12s linear infinite;
-            animation-delay: 6s;
-        }
-        
-        .cometa3 {
-            top: 40%;
-            left: 30%;
-            width: 40px;
-            animation: cometa-movimiento 6s linear infinite;
-            animation-delay: 4s;
-        }
-        
-        @keyframes cometa-movimiento {
-            0% {
-                transform: translateX(0) translateY(0) rotate(45deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateX(200px) translateY(200px) rotate(45deg);
-                opacity: 0;
-            }
-        }
-        
-        .nebulosa {
-            position: absolute;
-            width: 200px;
-            height: 150px;
-            background: radial-gradient(ellipse at center, rgba(106, 0, 255, 0.1) 0%, rgba(0, 247, 255, 0.03) 60%, rgba(0, 0, 0, 0) 100%);
-            border-radius: 50%;
-            filter: blur(5px);
-            animation: nebulosa-movimiento 15s linear infinite;
-        }
-        
-        .nebulosa1 {
-            top: 20%;
-            left: 10%;
-        }
-        
-        .nebulosa2 {
-            top: 60%;
-            left: 60%;
-            width: 180px;
-            height: 120px;
-            background: radial-gradient(ellipse at center, rgba(255, 0, 234, 0.1) 0%, rgba(255, 196, 0, 0.03) 60%, rgba(0, 0, 0, 0) 100%);
-        }
-        
-        @keyframes nebulosa-movimiento {
-            0% {
-                transform: translateX(0) scale(1);
-                opacity: 0.5;
-            }
-            50% {
-                transform: translateX(20px) scale(1.1);
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateX(0) scale(1);
-                opacity: 0.5;
-            }
-        }
-        
-        .titulo {
-            position: absolute;
-            top: 20px;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: #fff;
-            z-index: 20;
-        }
-        
-        .instrucciones {
-            position: absolute;
-            bottom: 20px;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            font-size: 14px;
-            color: #fff;
-            z-index: 20;
-        }
-        
-        .sol:hover {
-            transform: translate(-50%, -50%) scale(1.2);
-            box-shadow: 0 0 80px #ff9d00, 0 0 120px #ff4800;
-        }
-        
-        .container:hover .galaxia {
-            animation: rotar-galaxia 15s infinite alternate ease-in-out;
-        }
-        
-        @keyframes rotar-galaxia {
-            0% {
-                transform: rotateX(5deg) rotateY(0deg);
-            }
-            100% {
-                transform: rotateX(-5deg) rotateY(5deg);
-            }
-        }
-        
-        .mercurio {
-            --radio-orbita: 70px;
-        }
-        
-        .tierra {
-            --radio-orbita: 150px;
-        }
-        
-        .jupiter {
-            --radio-orbita: 240px;
-        }
-        
-        .urano {
-            --radio-orbita: 340px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flashcards</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: sans-serif;
+      background-image: url(https://cursoavanza.com/wp-content/uploads/2017/12/Librosestudio.jpg);
+      background-size: 100%;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .contenedor {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .header {
+      background: linear-gradient(45deg, #07243d 0%, #00f2fe 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+    .header h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    .header p { opacity: 0.9; font-size: 1.1em; }
+
+    .formulario {
+      padding: 30px;
+      background: #f8f9fa;
+      border-bottom: 1px solid #e9ecef;
+    }
+    .grupo {
+      margin-bottom: 20px;
+    }
+    .grupo label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+      font-size: 1.1em;
+    }
+    .grupo input,
+    .grupo textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      font-size: 16px;
+      font-family: inherit;
+      transition: border-color 0.3s ease;
+    }
+    .grupo input:focus,
+    .grupo textarea:focus {
+      outline: none;
+      border-color: #4facfe;
+      box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+    }
+    .grupo textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .btn-agregar {
+      background: linear-gradient(45deg, #0f3251 0%, #00f2fe 100%);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 8px;
+      font-size: 1.1em;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-agregar:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(79, 172, 254, 0.3);
+    }
+
+    .flashcards {
+      padding: 30px;
+      min-height: 200px;
+    }
+    .lista {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .flashcard {
+      position: relative;
+      height: 200px;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+    .carta {
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    .flashcard.volteada .carta {
+      transform: rotateY(180deg);
+    }
+    .frente, .atras {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      transition: box-shadow 0.3s ease;
+    }
+    .frente {
+      background: linear-gradient(135deg, #9a3600 0%, #ffc068 100%);
+      color: white;
+    }
+    .atras {
+      background: linear-gradient(135deg, #000c68 0%, #57dbf5 100%);
+      color: white;
+      transform: rotateY(180deg);
+    }
+    .flashcard:hover .frente,
+    .flashcard:hover .atras {
+      box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+    }
+    .texto {
+      font-size: 1.1em;
+      line-height: 1.4;
+      word-wrap: break-word;
+      max-width: 100%;
+    }
+    .btn-borrar {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease, background-color 0.3s ease;
+      z-index: 10;
+    }
+    .flashcard:hover .btn-borrar {
+      opacity: 1;
+    }
+    .btn-borrar:hover {
+      background: rgba(255,59,48,0.8);
+    }
+
+    .vacio {
+      text-align: center;
+      padding: 60px 20px;
+      color: #6c757d;
+    }
+    .vacio h3 {
+      font-size: 1.5em;
+      margin-bottom: 10px;
+    }
+
+    .conteo {
+      background: #e3f2fd;
+      padding: 15px 30px;
+      text-align: center;
+      color: #1976d2;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .lista { grid-template-columns: 1fr; }
+      .header h1 { font-size: 2em; }
+      .formulario, .flashcards { padding: 20px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="galaxia">
-            <div class="nebulosa nebulosa1"></div>
-            <div class="nebulosa nebulosa2"></div>
-            
-            <div class="estrellas">
-                <div class="estrella" style="left: 20%; top: 25%;"></div>
-                <div class="estrella" style="left: 30%; top: 12%;"></div>
-                <div class="estrella" style="left: 75%; top: 45%;"></div>
-                <div class="estrella" style="left: 85%; top: 55%;"></div>
-                <div class="estrella" style="left: 45%; top: 15%;"></div>
-                <div class="estrella" style="left: 55%; top: 25%;"></div>
-                <div class="estrella" style="left: 12%; top: 65%;"></div>
-                <div class="estrella" style="left: 32%; top: 85%;"></div>
-                <div class="estrella" style="left: 62%; top: 15%;"></div>
-                <div class="estrella" style="left: 92%; top: 45%;"></div>
-            </div>
-            
-            <div class="cometa cometa1"></div>
-            <div class="cometa cometa2"></div>
-            <div class="cometa cometa3"></div>
-            
-            <div class="sol"></div>
-            <div class="orbita orbita1"></div>
-            <div class="orbita orbita2"></div>
-            <div class="orbita orbita3"></div>
-            <div class="orbita orbita4"></div>
-            <div class="orbita orbita5"></div>
-            <div class="orbita orbita6"></div>
-            <div class="orbita orbita7"></div>
-            
-            <div class="planeta mercurio"></div>
-            <div class="planeta venus"></div>
-            <div class="planeta tierra"></div>
-            <div class="planeta marte"></div>
-            <div class="planeta jupiter"></div>
-            <div class="planeta saturno">
-                <div class="anillo"></div>
-            </div>
-            <div class="planeta urano"></div>
-            <div class="planeta neptuno"></div>
-            
-            <div class="titulo">Galaxia Interactiva</div>
-            <div class="instrucciones">Ponga el mouse sobre Venus, Marte, Saturno, Neptuno o el Sol</div>
-        </div>
+  <div class="contenedor">
+    <div class="header">
+      <h1>Flashcards Interactivas</h1>
+      <p>Escribe tus flashcards para estudiar</p>
     </div>
+
+    <div class="conteo"><span id="total">0 flashcards</span></div>
+
+    <div class="formulario">
+      <div class="grupo">
+        <label for="pregunta">Pregunta:</label>
+        <input type="text" id="pregunta" placeholder="Escribe la pregunta..." maxlength="200">
+      </div>
+      <div class="grupo">
+        <label for="respuesta">Respuesta:</label>
+        <textarea id="respuesta" placeholder="Escribe la respuesta..." maxlength="500"></textarea>
+      </div>
+      <button class="btn-agregar" id="agregar">➕ Agregar</button>
+    </div>
+
+    <div class="flashcards">
+      <div class="lista" id="lista">
+        <div class="vacio" id="vacio">
+          <h3>No hay ninguna Flashcard</h3>
+          <p>Agregá una ahí, vivo</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let flashcards = [];
+    let id = 0;
+
+    const pregunta = document.getElementById('pregunta');
+    const respuesta = document.getElementById('respuesta');
+    const agregar = document.getElementById('agregar');
+    const lista = document.getElementById('lista');
+    const vacio = document.getElementById('vacio');
+    const total = document.getElementById('total');
+
+    function crearFlashcard(p, r) {
+      id++;
+      const f = document.createElement('div');
+      f.classList.add('flashcard');
+      f.setAttribute('data-id', id);
+
+      const carta = document.createElement('div');
+      carta.classList.add('carta');
+
+      const frente = document.createElement('div');
+      frente.classList.add('frente');
+      const txtP = document.createElement('div');
+      txtP.classList.add('texto');
+      txtP.innerText = p;
+      frente.appendChild(txtP);
+
+      const atras = document.createElement('div');
+      atras.classList.add('atras');
+      const txtR = document.createElement('div');
+      txtR.classList.add('texto');
+      txtR.innerText = r;
+      atras.appendChild(txtR);
+
+      const borrar = document.createElement('button');
+      borrar.classList.add('btn-borrar');
+      borrar.innerText = '×';
+
+      carta.appendChild(frente);
+      carta.appendChild(atras);
+      f.appendChild(carta);
+      f.appendChild(borrar);
+
+      carta.addEventListener('click', function(e) {
+        e.stopPropagation();
+        f.classList.toggle('volteada');
+      });
+
+      borrar.addEventListener('click', function(e) {
+        e.stopPropagation();
+        eliminar(id);
+      });
+
+      return { elem: f, id, p, r };
+    }
+
+    function agregarFlashcard() {
+      const p = pregunta.value.trim();
+      const r = respuesta.value.trim();
+      if (!p || !r) return alert('Completa ambos campos');
+
+      const nueva = crearFlashcard(p, r);
+      flashcards.push(nueva);
+      if (flashcards.length === 1) vacio.style.display = 'none';
+      lista.appendChild(nueva.elem);
+      pregunta.value = '';
+      respuesta.value = '';
+      pregunta.focus();
+      actualizarTotal();
+    }
+
+    function eliminar(idBorrar) {
+      const i = flashcards.findIndex(f => f.id === idBorrar);
+      if (i === -1) return;
+      const e = flashcards[i].elem;
+      e.style.transform = 'scale(0)';
+      e.style.opacity = '0';
+      e.style.transition = 'all 0.3s ease';
+      setTimeout(() => {
+        e.remove();
+        flashcards.splice(i, 1);
+        if (flashcards.length === 0) vacio.style.display = 'block';
+        actualizarTotal();
+      }, 300);
+    }
+
+    function actualizarTotal() {
+      const n = flashcards.length;
+      total.innerText = `${n} ${n === 1 ? 'flashcard' : 'flashcards'}`;
+    }
+
+    agregar.addEventListener('click', agregarFlashcard);
+    pregunta.addEventListener('keypress', e => { if (e.key === 'Enter') respuesta.focus(); });
+    respuesta.addEventListener('keypress', e => { if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault(); agregarFlashcard();
+    }});
+    pregunta.focus();
+  </script>
 </body>
 </html>
