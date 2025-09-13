@@ -1,328 +1,128 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flashcards</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: sans-serif;
-      background-image: url(https://cursoavanza.com/wp-content/uploads/2017/12/Librosestudio.jpg);
-      background-size: 100%;
-      min-height: 100vh;
-      padding: 20px;
-    }
-    .contenedor {
-      max-width: 800px;
-      margin: auto;
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-      overflow: hidden;
-    }
-    .header {
-      background: linear-gradient(45deg, #07243d 0%, #00f2fe 100%);
-      color: white;
-      padding: 30px;
-      text-align: center;
-    }
-    .header h1 {
-      font-size: 2.5em;
-      margin-bottom: 10px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    }
-    .header p { opacity: 0.9; font-size: 1.1em; }
-
-    .formulario {
-      padding: 30px;
-      background: #f8f9fa;
-      border-bottom: 1px solid #e9ecef;
-    }
-    .grupo {
-      margin-bottom: 20px;
-    }
-    .grupo label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: #333;
-      font-size: 1.1em;
-    }
-    .grupo input,
-    .grupo textarea {
-      width: 100%;
-      padding: 12px;
-      border: 2px solid #e9ecef;
-      border-radius: 8px;
-      font-size: 16px;
-      font-family: inherit;
-      transition: border-color 0.3s ease;
-    }
-    .grupo input:focus,
-    .grupo textarea:focus {
-      outline: none;
-      border-color: #4facfe;
-      box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
-    }
-    .grupo textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
-
-    .btn-agregar {
-      background: linear-gradient(45deg, #0f3251 0%, #00f2fe 100%);
-      color: white;
-      border: none;
-      padding: 15px 30px;
-      border-radius: 8px;
-      font-size: 1.1em;
-      font-weight: 600;
-      cursor: pointer;
-      width: 100%;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .btn-agregar:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(79, 172, 254, 0.3);
-    }
-
-    .flashcards {
-      padding: 30px;
-      min-height: 200px;
-    }
-    .lista {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
-    }
-    .flashcard {
-      position: relative;
-      height: 200px;
-      perspective: 1000px;
-      cursor: pointer;
-    }
-    .carta {
-      width: 100%;
-      height: 100%;
-      text-align: center;
-      transition: transform 0.6s;
-      transform-style: preserve-3d;
-    }
-    .flashcard.volteada .carta {
-      transform: rotateY(180deg);
-    }
-    .frente, .atras {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-      transition: box-shadow 0.3s ease;
-    }
-    .frente {
-      background: linear-gradient(135deg, #9a3600 0%, #ffc068 100%);
-      color: white;
-    }
-    .atras {
-      background: linear-gradient(135deg, #000c68 0%, #57dbf5 100%);
-      color: white;
-      transform: rotateY(180deg);
-    }
-    .flashcard:hover .frente,
-    .flashcard:hover .atras {
-      box-shadow: 0 12px 35px rgba(0,0,0,0.15);
-    }
-    .texto {
-      font-size: 1.1em;
-      line-height: 1.4;
-      word-wrap: break-word;
-      max-width: 100%;
-    }
-    .btn-borrar {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: rgba(255,255,255,0.2);
-      color: white;
-      border: none;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transition: opacity 0.3s ease, background-color 0.3s ease;
-      z-index: 10;
-    }
-    .flashcard:hover .btn-borrar {
-      opacity: 1;
-    }
-    .btn-borrar:hover {
-      background: rgba(255,59,48,0.8);
-    }
-
-    .vacio {
-      text-align: center;
-      padding: 60px 20px;
-      color: #6c757d;
-    }
-    .vacio h3 {
-      font-size: 1.5em;
-      margin-bottom: 10px;
-    }
-
-    .conteo {
-      background: #e3f2fd;
-      padding: 15px 30px;
-      text-align: center;
-      color: #1976d2;
-      font-weight: 600;
-    }
-
-    @media (max-width: 768px) {
-      .lista { grid-template-columns: 1fr; }
-      .header h1 { font-size: 2em; }
-      .formulario, .flashcards { padding: 20px; }
-    }
-  </style>
+    <title>Camara con Voz</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial;
+        }
+        
+        .videito {
+            width: 400px;
+            height: 300px;
+            border: 2px solid black;
+        }
+        
+        .botoncito {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+        }
+        
+        .canvasito {
+            border: 2px solid green;
+            display: none;
+        }
+        
+        .mensajito {
+            padding: 10px;
+            margin: 10px;
+            background: lightblue;
+        }
+    </style>
 </head>
 <body>
-  <div class="contenedor">
-    <div class="header">
-      <h1>Flashcards Interactivas</h1>
-      <p>Escribe tus flashcards para estudiar</p>
-    </div>
+    <h1>Mi Camara</h1>
+    
+    <video id="videito" class="videito" autoplay></video><br>
+    
+    <button id="botoncitocamara" class="botoncito">Encender Camara</button>
+    <button id="botoncitovoz" class="botoncito" disabled>Escuchar Voz</button>
+    <button id="botoncitofoto" class="botoncito">Tomar Foto</button><br>
+    
+    <div id="mensajito" class="mensajito">Presiona Encender Camara</div>
+    
+    <canvas id="canvasito" class="canvasito"></canvas><br>
+    <button id="botoncitodescarga" class="botoncito" style="display:none">Descargar</button>
 
-    <div class="conteo"><span id="total">0 flashcards</span></div>
+    <script>
+        let videito = document.getElementById('videito');
+        let canvasito = document.getElementById('canvasito');
+        let mensajito = document.getElementById('mensajito');
+        let botoncitocamara = document.getElementById('botoncitocamara');
+        let botoncitovoz = document.getElementById('botoncitovoz');
+        let botoncitofoto = document.getElementById('botoncitofoto');
+        let botoncitodescarga = document.getElementById('botoncitodescarga');
+        
+        let camarita = null;
+        let vocecita = null;
+        let escuchando = false;
 
-    <div class="formulario">
-      <div class="grupo">
-        <label for="pregunta">Pregunta:</label>
-        <input type="text" id="pregunta" placeholder="Escribe la pregunta..." maxlength="200">
-      </div>
-      <div class="grupo">
-        <label for="respuesta">Respuesta:</label>
-        <textarea id="respuesta" placeholder="Escribe la respuesta..." maxlength="500"></textarea>
-      </div>
-      <button class="btn-agregar" id="agregar">➕ Agregar</button>
-    </div>
+        botoncitocamara.onclick = function() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function(stream) {
+                    camarita = stream;
+                    videito.srcObject = stream;
+                    canvasito.width = 400;
+                    canvasito.height = 300;
+                    botoncitocamara.disabled = true;
+                    botoncitovoz.disabled = false;
+                    mensajito.innerHTML = 'Camara lista';
+                });
+        };
 
-    <div class="flashcards">
-      <div class="lista" id="lista">
-        <div class="vacio" id="vacio">
-          <h3>No hay ninguna Flashcard</h3>
-          <p>Agregá una ahí, vivo</p>
-        </div>
-      </div>
-    </div>
-  </div>
+        botoncitovoz.onclick = function() {
+            if (escuchando) {
+                vocecita.stop();
+                escuchando = false;
+                botoncitovoz.innerHTML = 'Escuchar Voz';
+                mensajito.innerHTML = 'No escuchando';
+            } else {
+                let SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                vocecita = new SpeechRecognition();
+                
+                vocecita.onstart = function() {
+                    escuchando = true;
+                    botoncitovoz.innerHTML = 'Parar Voz';
+                    mensajito.innerHTML = 'Escuchando... di FOTO';
+                };
+                
+                vocecita.onresult = function(event) {
+                    let palabritas = event.results[event.results.length-1][0].transcript.toLowerCase();
+                    if (palabritas.includes('foto')) {
+                        tomarfotito();
+                        mensajito.innerHTML = 'Foto tomada!';
+                    }
+                };
+                
+                vocecita.onend = function() {
+                    if (escuchando) {
+                        vocecita.start();
+                    }
+                };
+                
+                vocecita.start();
+            }
+        };
 
-  <script>
-    let flashcards = [];
-    let id = 0;
+        botoncitofoto.onclick = function() {
+            tomarfotito();
+        };
 
-    const pregunta = document.getElementById('pregunta');
-    const respuesta = document.getElementById('respuesta');
-    const agregar = document.getElementById('agregar');
-    const lista = document.getElementById('lista');
-    const vacio = document.getElementById('vacio');
-    const total = document.getElementById('total');
+        botoncitodescarga.onclick = function() {
+            let linkito = document.createElement('a');
+            linkito.download = 'foto.png';
+            linkito.href = canvasito.toDataURL();
+            linkito.click();
+        };
 
-    function crearFlashcard(p, r) {
-      id++;
-      const f = document.createElement('div');
-      f.classList.add('flashcard');
-      f.setAttribute('data-id', id);
-
-      const carta = document.createElement('div');
-      carta.classList.add('carta');
-
-      const frente = document.createElement('div');
-      frente.classList.add('frente');
-      const txtP = document.createElement('div');
-      txtP.classList.add('texto');
-      txtP.innerText = p;
-      frente.appendChild(txtP);
-
-      const atras = document.createElement('div');
-      atras.classList.add('atras');
-      const txtR = document.createElement('div');
-      txtR.classList.add('texto');
-      txtR.innerText = r;
-      atras.appendChild(txtR);
-
-      const borrar = document.createElement('button');
-      borrar.classList.add('btn-borrar');
-      borrar.innerText = '×';
-
-      carta.appendChild(frente);
-      carta.appendChild(atras);
-      f.appendChild(carta);
-      f.appendChild(borrar);
-
-      carta.addEventListener('click', function(e) {
-        e.stopPropagation();
-        f.classList.toggle('volteada');
-      });
-
-      borrar.addEventListener('click', function(e) {
-        e.stopPropagation();
-        eliminar(id);
-      });
-
-      return { elem: f, id, p, r };
-    }
-
-    function agregarFlashcard() {
-      const p = pregunta.value.trim();
-      const r = respuesta.value.trim();
-      if (!p || !r) return alert('Completa ambos campos');
-
-      const nueva = crearFlashcard(p, r);
-      flashcards.push(nueva);
-      if (flashcards.length === 1) vacio.style.display = 'none';
-      lista.appendChild(nueva.elem);
-      pregunta.value = '';
-      respuesta.value = '';
-      pregunta.focus();
-      actualizarTotal();
-    }
-
-    function eliminar(idBorrar) {
-      const i = flashcards.findIndex(f => f.id === idBorrar);
-      if (i === -1) return;
-      const e = flashcards[i].elem;
-      e.style.transform = 'scale(0)';
-      e.style.opacity = '0';
-      e.style.transition = 'all 0.3s ease';
-      setTimeout(() => {
-        e.remove();
-        flashcards.splice(i, 1);
-        if (flashcards.length === 0) vacio.style.display = 'block';
-        actualizarTotal();
-      }, 300);
-    }
-
-    function actualizarTotal() {
-      const n = flashcards.length;
-      total.innerText = `${n} ${n === 1 ? 'flashcard' : 'flashcards'}`;
-    }
-
-    agregar.addEventListener('click', agregarFlashcard);
-    pregunta.addEventListener('keypress', e => { if (e.key === 'Enter') respuesta.focus(); });
-    respuesta.addEventListener('keypress', e => { if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault(); agregarFlashcard();
-    }});
-    pregunta.focus();
-  </script>
+        function tomarfotito() {
+            let ctx = canvasito.getContext('2d');
+            ctx.drawImage(videito, 0, 0, 400, 300);
+            canvasito.style.display = 'block';
+            botoncitodescarga.style.display = 'block';
+        }
+    </script>
 </body>
 </html>
