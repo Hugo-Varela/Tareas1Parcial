@@ -1,128 +1,214 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Camara con Voz</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Mejor Pokedex</title>
     <style>
         body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
             text-align: center;
-            font-family: Arial;
+            color: #333;
         }
-        
-        .videito {
-            width: 400px;
-            height: 300px;
-            border: 2px solid black;
+
+        .buscar {
+            text-align: center;
+            margin-bottom: 20px;
         }
-        
-        .botoncito {
-            padding: 10px 20px;
-            margin: 5px;
-            font-size: 16px;
-        }
-        
-        .canvasito {
-            border: 2px solid green;
-            display: none;
-        }
-        
-        .mensajito {
+
+        .buscar input {
             padding: 10px;
-            margin: 10px;
-            background: lightblue;
+            font-size: 16px;
+            width: 300px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .pokemon-lista {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pokemon-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .pokemon-img {
+            width: 120px;
+            height: 120px;
+            cursor: pointer;
+        }
+
+        .pokemon-img:hover {
+            transform: scale(1.1);
+        }
+
+        .pokemon-nombre {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+            text-transform: capitalize;
+        }
+
+        .pokemon-numero {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .botones {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+
+        .btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .pagina-info {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .cargando {
+            text-align: center;
+            font-size: 20px;
+            color: #666;
+            margin: 50px 0;
         }
     </style>
 </head>
 <body>
-    <h1>Mi Camara</h1>
+    <h1>El Mero Pokedex</h1>
     
-    <video id="videito" class="videito" autoplay></video><br>
+    <div class="buscar">
+        <input type="text" id="buscador" placeholder="Buscar Pokemon...">
+    </div>
+
+    <div id="cargando" class="cargando">Cargando Pokemon...</div>
     
-    <button id="botoncitocamara" class="botoncito">Encender Camara</button>
-    <button id="botoncitovoz" class="botoncito" disabled>Escuchar Voz</button>
-    <button id="botoncitofoto" class="botoncito">Tomar Foto</button><br>
-    
-    <div id="mensajito" class="mensajito">Presiona Encender Camara</div>
-    
-    <canvas id="canvasito" class="canvasito"></canvas><br>
-    <button id="botoncitodescarga" class="botoncito" style="display:none">Descargar</button>
+    <div id="pokemonLista" class="pokemon-lista"></div>
+
+    <div class="pagina-info">
+        <span id="paginaInfo">Página 1</span>
+    </div>
+
+    <div class="botones">
+        <button id="anterior" class="btn">Anterior</button>
+        <button id="siguiente" class="btn">Siguiente</button>
+    </div>
 
     <script>
-        let videito = document.getElementById('videito');
-        let canvasito = document.getElementById('canvasito');
-        let mensajito = document.getElementById('mensajito');
-        let botoncitocamara = document.getElementById('botoncitocamara');
-        let botoncitovoz = document.getElementById('botoncitovoz');
-        let botoncitofoto = document.getElementById('botoncitofoto');
-        let botoncitodescarga = document.getElementById('botoncitodescarga');
-        
-        let camarita = null;
-        let vocecita = null;
-        let escuchando = false;
+        let pokemones = [];
+        let pokemonesFiltrados = [];
+        let paginaActual = 1;
+        let porPagina = 20;
 
-        botoncitocamara.onclick = function() {
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(function(stream) {
-                    camarita = stream;
-                    videito.srcObject = stream;
-                    canvasito.width = 400;
-                    canvasito.height = 300;
-                    botoncitocamara.disabled = true;
-                    botoncitovoz.disabled = false;
-                    mensajito.innerHTML = 'Camara lista';
-                });
-        };
+        const lista = document.getElementById('pokemonLista');
+        const buscador = document.getElementById('buscador');
+        const btnAnterior = document.getElementById('anterior');
+        const btnSiguiente = document.getElementById('siguiente');
+        const info = document.getElementById('paginaInfo');
+        const cargando = document.getElementById('cargando');
 
-        botoncitovoz.onclick = function() {
-            if (escuchando) {
-                vocecita.stop();
-                escuchando = false;
-                botoncitovoz.innerHTML = 'Escuchar Voz';
-                mensajito.innerHTML = 'No escuchando';
-            } else {
-                let SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                vocecita = new SpeechRecognition();
+        async function cargarPokemon() {
+            try {
+                const respuesta = await fetch('https://pokeapi.co/api/v2/pokemon?limit=150&offset=0');
+                const datos = await respuesta.json();
                 
-                vocecita.onstart = function() {
-                    escuchando = true;
-                    botoncitovoz.innerHTML = 'Parar Voz';
-                    mensajito.innerHTML = 'Escuchando... di FOTO';
-                };
+                for (let i = 0; i < datos.results.length; i++) {
+                    const pokemon = datos.results[i];
+                    const id = i + 1;
+                    const imagen = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+                    
+                    pokemones.push({
+                        id: id,
+                        nombre: pokemon.name,
+                        imagen: imagen
+                    });
+                }
                 
-                vocecita.onresult = function(event) {
-                    let palabritas = event.results[event.results.length-1][0].transcript.toLowerCase();
-                    if (palabritas.includes('foto')) {
-                        tomarfotito();
-                        mensajito.innerHTML = 'Foto tomada!';
-                    }
-                };
+                pokemonesFiltrados = [...pokemones];
+                cargando.style.display = 'none';
+                mostrarTodos();
                 
-                vocecita.onend = function() {
-                    if (escuchando) {
-                        vocecita.start();
-                    }
-                };
-                
-                vocecita.start();
+            } catch (error) {
+                cargando.innerHTML = 'Error al cargar Pokemon. Revisa tu conexion.';
             }
-        };
-
-        botoncitofoto.onclick = function() {
-            tomarfotito();
-        };
-
-        botoncitodescarga.onclick = function() {
-            let linkito = document.createElement('a');
-            linkito.download = 'foto.png';
-            linkito.href = canvasito.toDataURL();
-            linkito.click();
-        };
-
-        function tomarfotito() {
-            let ctx = canvasito.getContext('2d');
-            ctx.drawImage(videito, 0, 0, 400, 300);
-            canvasito.style.display = 'block';
-            botoncitodescarga.style.display = 'block';
         }
+
+        function mostrarTodos() {
+            lista.innerHTML = '';
+
+            pokemonesFiltrados.forEach(pokemon => {
+                const card = document.createElement('div');
+                card.className = 'pokemon-card';
+                
+                card.innerHTML = `
+                    <div class="pokemon-numero">#${pokemon.id}</div>
+                    <img src="${pokemon.imagen}" alt="${pokemon.nombre}" class="pokemon-img" 
+                         onclick="abrirImagen('${pokemon.imagen}', '${pokemon.nombre}')">
+                    <div class="pokemon-nombre">${pokemon.nombre}</div>
+                `;
+                
+                lista.appendChild(card);
+            });
+
+            info.textContent = `Mostrando ${pokemonesFiltrados.length} Pokemon`;
+            btnAnterior.style.display = 'none';
+            btnSiguiente.style.display = 'none';
+        }
+
+        function abrirImagen(imagen, nombre) {
+            window.open(imagen, '_blank');
+        }
+
+        function buscar() {
+            const texto = buscador.value.toLowerCase();
+            
+            if (texto === '') {
+                pokemonesFiltrados = [...pokemones];
+            } else {
+                pokemonesFiltrados = pokemones.filter(pokemon => 
+                    pokemon.nombre.includes(texto)
+                );
+            }
+            
+            mostrarTodos();
+        }
+
+        buscador.addEventListener('input', buscar);
+
+        cargarPokemon();
     </script>
 </body>
 </html>
