@@ -3,180 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viajes y Naturaleza</title>
+    <title>Mi Pokedex Simple</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .buscar {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .buscar input {
+            padding: 10px;
+            font-size: 16px;
+            width: 300px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .pokemon-lista {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pokemon-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .pokemon-img {
+            width: 120px;
+            height: 120px;
+            cursor: pointer;
+        }
+
+        .pokemon-img:hover {
+            transform: scale(1.1);
+        }
+
+        .pokemon-nombre {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+            text-transform: capitalize;
+        }
+
+        .pokemon-numero {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .botones {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+
+        .btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .pagina-info {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .cargando {
+            text-align: center;
+            font-size: 20px;
+            color: #666;
+            margin: 50px 0;
+        }
+    </style>
 </head>
-<style>
-    *{
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Verdana', sans-serif;
-    }
-
-    nav{
-        background-color: #093394;
-        color: white;
-        display: flex;
-        justify-content: space-between;
-        position: sticky;
-        top: 0;
-        z-index: 10;
-    }
-    .titulo_nav{
-        padding: 15px;
-        padding-left: 30px;
-        font-weight: bold;
-        font-size: 25px;
-    }
-    nav ul{
-        list-style: none;
-        text-align: right;
-        font-size: 16px;
-        margin-top: 18px;  
-        margin-right: 35px;      
-    }
-    nav ul li{
-        display: inline-block;
-        margin-right: 20px;
-    }
-    nav ul li:hover{
-        cursor: pointer;
-        color: #07d8ed;
-    }
-
-    .container {
-        display: flex;
-        justify-content: center;
-        align-items: stretch;
-        gap: 20px;
-        padding: 50px 20px;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    .card {
-        display: flex;
-        flex-direction: column;
-        width: 27%;
-        box-shadow: 0px 2px 3px lightsteelblue;
-        border-radius: 20px;
-        transition: all 0.5s ease;
-        overflow: hidden;
-    }
-    .card img {
-        width: 100%;
-        height: 250px;
-        object-fit: cover;
-        border-radius: 20px 20px 0 0;
-    }
-    .card-content {
-        padding: 10px;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    }
-    .card-content h1 {
-        text-align: left;
-        font-size: 20px;
-        margin-bottom: 10px;
-    }
-    .card-content p {
-        text-align: left;
-        font-size: 14px;
-        flex-grow: 1;
-    }
-    .card:hover {
-        transform: scale(1.05);
-    }
-
-    table{
-        width: 90%;
-        max-width: 1200px;
-        margin: 0 auto 100px;
-        border-collapse: collapse;
-        border-left: 2px solid #c8dddf;
-        border-right: 2px solid  #c8dddf;
-        border-top: 2px solid  #c8dddf;
-    }
-    table tr td{
-        border-bottom: 2px solid  #c8dddf;
-        padding: 20px;
-    }
-    tr:nth-child(1){
-        background-color: #093394;
-        color: white;
-        font-weight: bold;
-    }
-    tr:hover{
-        background-color: #a09ccd;
-    }
-</style>
 <body>
-    <nav>
-        <p class="titulo_nav">Viajes y Naturaleza</p>
-        <ul>
-            <li>Inicio</li>
-            <li>Galeria</li>
-            <li>Destinos</li>
-            <li>Contacto</li>
-        </ul>
-    </nav>
-
-    <div class="container">
-        <div class="card">
-            <img src="https://i.pinimg.com/736x/13/e5/2a/13e52a010d6b4ab7db83f417861f372c.jpg" alt="Montaña">
-            <div class="card-content">
-                <h1>Paisajes de montaña</h1>
-                <p>Impresionantes vistas de cordilleras y picos nevados.</p>
-            </div>
-        </div>
-        <div class="card">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS5jnPrzjqZTEkAHv8NO7Dopkh7Uw5s9hEJQ&s" alt="Bosque">
-            <div class="card-content">
-                <h1>Bosques Misteriosos</h1>
-                <p>Explorando la tranquilidad de los bosques antiguos.</p>
-            </div>
-        </div>
-        <div class="card">
-            <img src="https://images.pexels.com/photos/457882/pexels-photo-457882.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Costas">
-            <div class="card-content">
-                <h1>Costas Paradisiacas</h1>
-                <p>Playas de arena blanca y aguas  cristalina.</p>
-            </div>
-        </div>
+    <h1>🔥 Mi Pokedex 🔥</h1>
+    
+    <div class="buscar">
+        <input type="text" id="buscador" placeholder="Buscar Pokemon...">
     </div>
 
-    <table>
-        <tr>
-            <td>Destino</td>
-            <td>País</td>
-            <td>Dificultad</td>
-            <td>Temporada Recomendada</td>
-        </tr>
-        <tr>
-            <td>Pico Bonito</td>
-            <td>Honduras</td>
-            <td>Alta</td>
-            <td>Mayo-Septiembre</td>
-        </tr>
-        <tr>
-            <td>Cristo Redentor</td>
-            <td>Brasil</td>
-            <td>Media</td>
-            <td>Julio-agosto</td>
-        </tr>
-        <tr>
-            <td>Islas Maldivas</td>
-            <td>Maldivas</td>
-            <td>Baja</td>
-            <td>Todo el año</td>
-        </tr>
-        <tr>
-            <td>Salty Springs</td>
-            <td>Fortnite</td>
-            <td>Alta</td>
-            <td>Noviembre-Marzo</td>
-        </tr>
-    </table>
+    <div id="cargando" class="cargando">Cargando Pokemon...</div>
+    
+    <div id="pokemonLista" class="pokemon-lista"></div>
+
+    <div class="pagina-info">
+        <span id="paginaInfo">Página 1</span>
+    </div>
+
+    <div class="botones">
+        <button id="anterior" class="btn">Anterior</button>
+        <button id="siguiente" class="btn">Siguiente</button>
+    </div>
+
+    <script>
+        let pokemones = [];
+        let pokemonesFiltrados = [];
+        let paginaActual = 1;
+        let porPagina = 20;
+
+        const lista = document.getElementById('pokemonLista');
+        const buscador = document.getElementById('buscador');
+        const btnAnterior = document.getElementById('anterior');
+        const btnSiguiente = document.getElementById('siguiente');
+        const info = document.getElementById('paginaInfo');
+        const cargando = document.getElementById('cargando');
+
+        async function cargarPokemon() {
+            try {
+                const respuesta = await fetch('https://pokeapi.co/api/v2/pokemon?limit=150&offset=0');
+                const datos = await respuesta.json();
+                
+                for (let i = 0; i < datos.results.length; i++) {
+                    const pokemon = datos.results[i];
+                    const id = i + 1;
+                    const imagen = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+                    
+                    pokemones.push({
+                        id: id,
+                        nombre: pokemon.name,
+                        imagen: imagen
+                    });
+                }
+                
+                pokemonesFiltrados = [...pokemones];
+                cargando.style.display = 'none';
+                mostrarTodos();
+                
+            } catch (error) {
+                cargando.innerHTML = 'Error al cargar Pokemon. Revisa tu conexion.';
+            }
+        }
+
+        function mostrarTodos() {
+            lista.innerHTML = '';
+
+            pokemonesFiltrados.forEach(pokemon => {
+                const card = document.createElement('div');
+                card.className = 'pokemon-card';
+                
+                card.innerHTML = `
+                    <div class="pokemon-numero">#${pokemon.id}</div>
+                    <img src="${pokemon.imagen}" alt="${pokemon.nombre}" class="pokemon-img" 
+                         onclick="abrirImagen('${pokemon.imagen}', '${pokemon.nombre}')">
+                    <div class="pokemon-nombre">${pokemon.nombre}</div>
+                `;
+                
+                lista.appendChild(card);
+            });
+
+            info.textContent = `Mostrando ${pokemonesFiltrados.length} Pokemon`;
+            btnAnterior.style.display = 'none';
+            btnSiguiente.style.display = 'none';
+        }
+
+        function abrirImagen(imagen, nombre) {
+            window.open(imagen, '_blank');
+        }
+
+        function buscar() {
+            const texto = buscador.value.toLowerCase();
+            
+            if (texto === '') {
+                pokemonesFiltrados = [...pokemones];
+            } else {
+                pokemonesFiltrados = pokemones.filter(pokemon => 
+                    pokemon.nombre.includes(texto)
+                );
+            }
+            
+            mostrarTodos();
+        }
+
+        buscador.addEventListener('input', buscar);
+
+        cargarPokemon();
+    </script>
 </body>
 </html>
