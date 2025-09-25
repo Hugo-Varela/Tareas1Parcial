@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Pokedex Simple</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .buscar {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .buscar input {
+            padding: 10px;
+            font-size: 16px;
+            width: 300px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .pokemon-lista {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pokemon-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .pokemon-img {
+            width: 120px;
+            height: 120px;
+            cursor: pointer;
+        }
+
+        .pokemon-img:hover {
+            transform: scale(1.1);
+        }
+
+        .pokemon-nombre {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+            text-transform: capitalize;
+        }
+
+        .pokemon-numero {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .botones {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+
+        .btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .pagina-info {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .cargando {
+            text-align: center;
+            font-size: 20px;
+            color: #666;
+            margin: 50px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔥 Mi Pokedex 🔥</h1>
+    
+    <div class="buscar">
+        <input type="text" id="buscador" placeholder="Buscar Pokemon...">
+    </div>
+
+    <div id="cargando" class="cargando">Cargando Pokemon...</div>
+    
+    <div id="pokemonLista" class="pokemon-lista"></div>
+
+    <div class="pagina-info">
+        <span id="paginaInfo">Página 1</span>
+    </div>
+
+    <div class="botones">
+        <button id="anterior" class="btn">Anterior</button>
+        <button id="siguiente" class="btn">Siguiente</button>
+    </div>
+
+    <script>
+        let pokemones = [];
+        let pokemonesFiltrados = [];
+        let paginaActual = 1;
+        let porPagina = 20;
+
+        const lista = document.getElementById('pokemonLista');
+        const buscador = document.getElementById('buscador');
+        const btnAnterior = document.getElementById('anterior');
+        const btnSiguiente = document.getElementById('siguiente');
+        const info = document.getElementById('paginaInfo');
+        const cargando = document.getElementById('cargando');
+
+        async function cargarPokemon() {
+            try {
+                const respuesta = await fetch('https://pokeapi.co/api/v2/pokemon?limit=150&offset=0');
+                const datos = await respuesta.json();
+                
+                for (let i = 0; i < datos.results.length; i++) {
+                    const pokemon = datos.results[i];
+                    const id = i + 1;
+                    const imagen = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+                    
+                    pokemones.push({
+                        id: id,
+                        nombre: pokemon.name,
+                        imagen: imagen
+                    });
+                }
+                
+                pokemonesFiltrados = [...pokemones];
+                cargando.style.display = 'none';
+                mostrarTodos();
+                
+            } catch (error) {
+                cargando.innerHTML = 'Error al cargar Pokemon. Revisa tu conexion.';
+            }
+        }
+
+        function mostrarTodos() {
+            lista.innerHTML = '';
+
+            pokemonesFiltrados.forEach(pokemon => {
+                const card = document.createElement('div');
+                card.className = 'pokemon-card';
+                
+                card.innerHTML = `
+                    <div class="pokemon-numero">#${pokemon.id}</div>
+                    <img src="${pokemon.imagen}" alt="${pokemon.nombre}" class="pokemon-img" 
+                         onclick="abrirImagen('${pokemon.imagen}', '${pokemon.nombre}')">
+                    <div class="pokemon-nombre">${pokemon.nombre}</div>
+                `;
+                
+                lista.appendChild(card);
+            });
+
+            info.textContent = `Mostrando ${pokemonesFiltrados.length} Pokemon`;
+            btnAnterior.style.display = 'none';
+            btnSiguiente.style.display = 'none';
+        }
+
+        function abrirImagen(imagen, nombre) {
+            window.open(imagen, '_blank');
+        }
+
+        function buscar() {
+            const texto = buscador.value.toLowerCase();
+            
+            if (texto === '') {
+                pokemonesFiltrados = [...pokemones];
+            } else {
+                pokemonesFiltrados = pokemones.filter(pokemon => 
+                    pokemon.nombre.includes(texto)
+                );
+            }
+            
+            mostrarTodos();
+        }
+
+        buscador.addEventListener('input', buscar);
+
+        cargarPokemon();
+    </script>
+</body>
+</html>
